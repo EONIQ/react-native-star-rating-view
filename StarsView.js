@@ -13,8 +13,6 @@ class StarsView extends PureComponent {
       validMaximumValue,
     } = this.props;
 
-    console.log('render 2');
-
     let stars = [];
     for (let idx = 0; idx < validMaximumValue; idx++) {
       const highlighted = (idx + 1 <= Math.ceil(value));
@@ -23,8 +21,9 @@ class StarsView extends PureComponent {
       if (allowsHalfStars && highlighted && (idx + 1 > value)) {
         if (accurateHalfStars) {
           renderProgress = value - idx;
+        } else {
+          renderProgress = 0.5;
         }
-        renderProgress = 0.5;
       }
 
       stars.push(
