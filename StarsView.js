@@ -13,23 +13,25 @@ class StarsView extends PureComponent {
       validMaximumValue,
     } = this.props;
 
-    let stars = [];
+    const stars = [];
     for (let idx = 0; idx < validMaximumValue; idx++) {
       const highlighted = (idx + 1 <= Math.ceil(value));
 
-      let renderProgress = highlighted ? 1 : 0;
+      let renderProgress = 0;
       if (allowsHalfStars && highlighted && (idx + 1 > value)) {
         if (accurateHalfStars) {
           renderProgress = value - idx;
         } else {
           renderProgress = 0.5;
         }
+      } else {
+        renderProgress = highlighted ? 1 : 0;
       }
 
       stars.push(
         <StarView
           key={`StarView_id_${idx}`}
-          style={[starStyle, {marginRight: spacing}]}
+          style={[starStyle, { marginRight: spacing }]}
           emptyStarColor={emptyStarColor}
           tintColor={tintColor}
           emptyStarImage={emptyStarImage}

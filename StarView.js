@@ -28,48 +28,78 @@ export default class StarView extends PureComponent {
     emptyStarColor: '#999',
     tintColor: '#ffb819',
   };
+  renderEmptyStar = () => {
+    const { emptyStarImage, starWidth, emptyStarColor } = this.props;
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      progress: Math.min(Math.max(0, this.props.progress), 1),
-    };
-  }
-
-  /* 组件的生命周期函数 */
-  componentDidMount() {
-
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this._handleNextProps(nextProps);
-  }
-
-  // shouldComponentUpdate(nextProps, nextState, nextContext) {
-  //   if (nextProps.style ) {
-
-  //   }
-  // }
-
-  _handleNextProps = (nextProps) => {
-    let { progress } = this.props;
-    if (nextProps.progress !== progress) {
-      progress = nextProps.progress;
-      this.setState({
-        progress,
-      });
+    if (!emptyStarImage) {
+      return <Icon style={styles.starImage} name="star-o" size={starWidth} color={emptyStarColor} />;
     }
+
+    return emptyStarImage;
   }
 
-  /* 渲染组件 */
-  render = () => {
-    let { progress } = this.state;
-    let { style, emptyStarImage, filledStarImage, emptyStarColor, tintColor, starWidth } = this.props;
+  renderFullStar = () => {
+    const { filledStarImage, starWidth, tintColor } = this.props;
+
+    if (!filledStarImage) {
+      return <Icon style={styles.starImage} name="star" size={starWidth} color={tintColor} />;
+    }
+
+    return filledStarImage;
+  }
+
+  renderHalfStar = () => {
+    let { progress, style, emptyStarImage, filledStarImage, emptyStarColor, tintColor, starWidth } = this.props;
     let defaultStarStyle = {
       width: 16,
       height: 16,
     };
+
+    return (
+      <View style={{ flex: 1 }}>
+        <View style={[styles.star, defaultStarStyle, style]}>
+          {this.renderEmptyStar()}
+        </View>
+        <View
+          /**
+            * removeClippedSubviews bool
+            * 这是一个特殊的性能相关的属性，由RCTView导出。在制作滑动控件时，如果控件有很多不在屏幕内的子视图，会非常有用。
+            * 要让此属性生效，首先要求视图有很多超出范围的子视图，并且子视图和容器视图（或它的某个祖先视图）都应该有样式overflow: hidden。
+            */
+          // removeClippedSubviews={true} // 兼容Android
+          style={[styles.absoluteStar, defaultStarStyle, style, { width: starWidth * progress }]}
+        >
+          {this.renderFullStar()}
+        </View>
+      </View>
+    );
+  }
+
+  renderStar = () => {
+    const { progress, style } = this.props;
+
+    if (progress === 1) {
+      return (
+        <View style={[styles.star, style]}>
+          {this.renderFullStar()}
+        </View>
+      );
+    } else if (progress === 0) {
+      return (
+        <View style={[styles.star, style]}>
+          {this.renderEmptyStar()}
+        </View>
+      );
+      // return this.renderEmptyStar();
+    }
+
+    return this.renderHalfStar();
+  }
+
+  /* 渲染组件 */
+  render = () => {
+    // let { progress } = this.state;
+    let { progress, style, emptyStarImage, filledStarImage, emptyStarColor, tintColor, starWidth } = this.props;
     // let starStyleMerge = null;
     // if (Array.isArray(style)) {
     //   style.map((item, index) => {
@@ -89,29 +119,24 @@ export default class StarView extends PureComponent {
     // };
     // 星星宽度
     // const starWidth = Math.max(0, starWidth);
-    if (!emptyStarImage) {
-      emptyStarImage = <Icon style={styles.starImage} name="star-o" size={starWidth} color={emptyStarColor} />;
-    }
-    if (!filledStarImage) {
-      filledStarImage = <Icon style={styles.starImage} name="star" size={starWidth} color={tintColor} />;
-    }
+    // if (!emptyStarImage) {
+    //   emptyStarImage = <Icon style={styles.starImage} name="star-o" size={starWidth} color={emptyStarColor} />;
+    // }
+    // if (!filledStarImage) {
+    //   filledStarImage = <Icon style={styles.starImage} name="star" size={starWidth} color={tintColor} />;
+    // }
+
+    // if (progress === 1) {
+    //   return this.renderFullStar();
+    // } else if (progress === 0) {
+    //   return this.renderEmptyStar();
+    // }
+
+    // return this.renderHalfStar();
 
     return (
-      <View style={[styles.star, defaultStarStyle, style]}>
-        <View style={[styles.star, defaultStarStyle, style]}>
-          {emptyStarImage}
-        </View>
-        <View
-          /**
-            * removeClippedSubviews bool
-            * 这是一个特殊的性能相关的属性，由RCTView导出。在制作滑动控件时，如果控件有很多不在屏幕内的子视图，会非常有用。
-            * 要让此属性生效，首先要求视图有很多超出范围的子视图，并且子视图和容器视图（或它的某个祖先视图）都应该有样式overflow: hidden。
-            */
-          removeClippedSubviews={true} // 兼容Android
-          style={[styles.absoluteStar, defaultStarStyle, style, { width: starWidth * progress }]}
-        >
-          {filledStarImage}
-        </View>
+      <View style={[styles.star, style]}>
+        {this.renderStar()}
       </View>
     );
   }

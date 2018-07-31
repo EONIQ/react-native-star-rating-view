@@ -319,7 +319,7 @@ export default class StarRatingView extends PureComponent {
       };
     }
     return {
-      width: this.props.starStyle.width || 16,
+      width: this.props.starWidth || 16,
       height: this.props.starStyle.height || 16,
     };
   }
