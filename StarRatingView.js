@@ -45,7 +45,7 @@ export default class StarRatingView extends PureComponent {
     continuous: RNPropTypes.bool, // 是否允许滑动打分
     maximumValue: RNPropTypes.number.isRequired, // 最大值
     minimumValue: RNPropTypes.number.isRequired, // 最小值
-    value: RNPropTypes.number.isRequired, // 具体数值
+    value: RNPropTypes.number, // 具体数值
     valueToFix: RNPropTypes.number, // 保留几位小数
     spacing: RNPropTypes.number.isRequired, // 分数
     allowsHalfStars: RNPropTypes.bool, // 是否允许半颗星
