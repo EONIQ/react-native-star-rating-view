@@ -31,7 +31,7 @@ class StarsView extends PureComponent {
       stars.push(
         <StarView
           key={`StarView_id_${idx}`}
-          style={[starStyle, { marginRight: spacing }]}
+          style={[starStyle, idx < validMaximumValue - 1 && { marginRight: spacing }]}
           emptyStarColor={emptyStarColor}
           tintColor={tintColor}
           emptyStarImage={emptyStarImage}
