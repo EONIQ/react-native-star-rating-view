@@ -14,7 +14,7 @@ const RNViewPropTypes = ViewPropTypes || View.propTypes;
 const RNPropTypes = PropTypes || React.PropTypes;
 
 let _StarLog = function (message?: any, ...optionalParams: any[]) {
-  console.log(message, ...optionalParams);
+  // console.log(message, ...optionalParams);
 };
 
 
